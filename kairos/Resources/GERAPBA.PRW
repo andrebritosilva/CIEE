@@ -1,0 +1,29 @@
+#INCLUDE "TOTVS.CH"
+
+USER FUNCTION GERAPBA()
+Local cTZC7:= GetNextAlias()
+
+BeginSql Alias cTZC7
+    SELECT R_E_C_N_O_ AS RECZC7 FROM %TABLE:ZC7% ZC7 
+    WHERE ZC7_FILIAL=%xfilial:ZC7%
+    AND ZC7.D_E_L_E_T_ =''
+    ORDER BY R_E_C_N_O_	
+EndSql
+
+WHILE (cTZC7)->(!EOF())	
+
+    ZC7->(DBGOTO((cTZC7)->RECZC7))
+    IF ZC7->(!EOF())
+        DDATABASE:= ZC7->ZC7_DTINTE
+//        STATICCALL(CINTK05,IncTitPBA,ZC7->ZC7_IDCNTT, ZC7->ZC7_IDLOCC, ZC7->ZC7_IDFOL, ZC7->ZC7_COMPET , ZC7->ZC7_TOTGER)
+		U_INTITPBA(ZC7->ZC7_IDCNTT, ZC7->ZC7_IDLOCC, ZC7->ZC7_IDFOL, ZC7->ZC7_COMPET , ZC7->ZC7_TOTGER)
+    ENDIF
+
+(cTZC7)->(dbSkip())
+end
+
+(cTZC7)->(dbCloseArea())
+
+msginfo("Concluido!!")
+
+Return
